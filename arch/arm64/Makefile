@@ -95,6 +95,15 @@ ifeq ($(CONFIG_COMPAT_VDSO), y)
   endif
 endif
 
+ifeq ($(cc-name),clang)
+# This is a workaround for https://bugs.llvm.org/show_bug.cgi?id=30792.
+# TODO: revert when this is fixed in LLVM.
+KBUILD_CFLAGS	+= -mno-implicit-float
+else
+KBUILD_CFLAGS	+= -mgeneral-regs-only
+endif
+KBUILD_CFLAGS += $(lseinstr) $(brokengasinst) $(vdso32)
+
 #ifdef CONFIG_MACH_MT6768
 ifeq ($(cc-name),gcc)
 KBUILD_CFLAGS   += -mcpu=cortex-a75.cortex-a55 -mtune=cortex-a75.cortex-a55
@@ -103,7 +112,6 @@ ifeq ($(cc-name),clang)
 KBUILD_CFLAGS   += -mcpu=cortex-a55 -mtune=cortex-a55
 endif
 #endif
-KBUILD_CFLAGS	+= -mgeneral-regs-only $(lseinstr) $(brokengasinst) $(vdso32)
 KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables
 KBUILD_CFLAGS	+= -fno-pic
 KBUILD_AFLAGS	+= $(lseinstr) $(brokengasinst) $(vdso32)
