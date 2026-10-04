@@ -22,6 +22,16 @@ config MTK_GPU_COMMON_DVFS_SUPPORT
 	  It is nice method to save power.
 	  It is recommended to enable it when MTK_GPU_SUPPORT is enabled.
 
+config GPU_VERSION_MALI_VALHALL_R56P0
+	bool "Mali Valhall r56p0"
+	  select CONFIG_MALI_MIDGARD
+
+	endchoice
+      
+	if GPU_VERSION_MALI_VALHALL_R56P0 || MTK_GPU_SUPPORT
+	source "<path Kconfig mali r56p0>"
+	endif
+	
 config MTK_GPU_R5P0
 	bool "Force to use r5p0 driver"
 	default n
