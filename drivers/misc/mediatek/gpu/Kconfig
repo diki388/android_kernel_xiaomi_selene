@@ -24,16 +24,10 @@ config MTK_GPU_COMMON_DVFS_SUPPORT
 
 config GPU_VERSION_MALI_VALHALL_R56P0
 	bool "Mali Valhall r56p0"
-	  select CONFIG_MALI_MIDGARD
+	select MALI_MIDGARD
 
-	endchoice
-      
-	if GPU_VERSION_MALI_VALHALL_R56P0 || MTK_GPU_SUPPORT
-	source "<path Kconfig mali r56p0>"
-	endif
-	
 config MTK_GPU_R5P0
-	bool "Force to use r5p0 driver"
+	bool "Force to use r5p0 driver
 	default n
 	help
 	  config defines to use r5p0 drivers
@@ -62,3 +56,7 @@ config MTK_GPU_SWPM_SUPPORT
 	default n
 	help
 	   config supports to make SWPM enable/disable GPU power model
+
+if GPU_VERSION_MALI_VALHALL_R56P0 || MTK_GPU_SUPPORT
+source "drivers/gpu/mediatek/gpu_mali/mali_valhall/mali-r56p0/drivers/gpu/arm/midgard/Kconfig"
+endif
